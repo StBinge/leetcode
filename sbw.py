@@ -14,7 +14,7 @@ class ListNode:
             cur=cur.next
         return dummy.next
     
-    def display(self):
+    def print(self):
         cur=self
         nums=[]
         while cur:
@@ -30,7 +30,7 @@ class TreeNode:
         self.right = right
 
     @classmethod
-    def build(cls,vals:list|str):
+    def build(cls,vals):
         if isinstance(vals,str):
             vals=eval(vals.replace('null','None'))
         if not vals:

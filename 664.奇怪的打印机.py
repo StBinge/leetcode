@@ -8,17 +8,22 @@
 class Solution:
     def strangePrinter(self, s: str) -> int:
         L=len(s)
-        dp=[[L]*L for _ in range(L)]
+        dp=[[100]*L for _ in range(L)]
+        # for i in range(L):
         for i in range(L-1,-1,-1):
             dp[i][i]=1
             for j in range(i+1,L):
                 if s[i]==s[j]:
-                    dp[i][j]=dp[i+1][j]
+                    dp[i][j]=min(dp[i][j],dp[i][j-1])
                 else:
-
+                    cnt=100
                     for k in range(i,j):
-                        dp[i][j]=min(dp[i][j],dp[i][k]+dp[k+1][j])
+                        cnt=min(cnt,dp[i][k]+dp[k+1][j])
+                    dp[i][j]=cnt
+
         return dp[0][-1]
+
 # @lc code=end
-assert Solution().strangePrinter('aaabbb')==2
+assert Solution().strangePrinter("baacdddaaddaaaaccbddbcabdaabdbbcdcbbbacbddcabcaaa")==19
 assert Solution().strangePrinter('aba')==2
+assert Solution().strangePrinter('aaabbb')==2

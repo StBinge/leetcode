@@ -1,5 +1,6 @@
 from typing import List,Optional
 from collections import deque,Counter
+from functools import lru_cache
 
 class ListNode:
     def __init__(self, val=0, next=None):

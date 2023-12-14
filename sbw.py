@@ -1,5 +1,6 @@
 from typing import List,Optional
 from collections import deque,Counter
+from functools import lru_cache
 
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -118,7 +119,9 @@ class SortedSet:
         return left-1
 
 
-
+def format_array(s:str):
+    s=s.replace('null','None')
+    return eval(s)
 
 if __name__ == '__main__':
     # root=ListNode.build([1,2,3,4,5])

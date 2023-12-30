@@ -161,3 +161,4 @@ cython_debug/
 #.idea/
 
 __pycache__/sbw.cpython-39.pyc
+tempCodeRunnerFile.py

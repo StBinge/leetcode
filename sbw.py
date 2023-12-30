@@ -135,16 +135,21 @@ def eval_list_str(s: str):
     return eval(s)
 
 
+def exec_expression(expr: str):
+    import re
+
+    expr = re.sub(r",\s+", "\n", expr)
+    old_vars=locals().copy()
+
+    exec(expr)
+    ret={}
+    for k,v in locals().items():
+        if k not in old_vars:
+            ret[k]=v
+    ret.pop('old_vars')
+    ret.pop('ret')
+    return ret
+
 if __name__ == "__main__":
-    # root=ListNode.build([1,2,3,4,5])
-    # root.display()
-    root = TreeNode.build([3, 4, 5, 1, 3, None, 1])
-    print(root.to_str())
-    # values=[1,3,5,3,4,2,9,3,8]
-    # ss=SortedSet()
-    # for v in values:
-    #     print(f'v:{v},left  index:{ss.bisect_left(v)}')
-    #     print(f'v:{v},right index:{ss.bisect_right(v)}')
-    #     ss.add(v)
-    #     print(ss.array)
+    r = exec_expression("grid = [[1,1],[1,2]], row = 0, col = 0, color = 3")
     pass

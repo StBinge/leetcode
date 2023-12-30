@@ -1,6 +1,7 @@
-from typing import List, Optional
-from collections import deque, Counter
-from functools import lru_cache
+from typing import List,Optional
+from collections import deque,Counter
+from functools import cache
+from itertools import accumulate
 
 
 class ListNode:

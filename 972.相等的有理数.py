@@ -5,68 +5,27 @@
 #
 from sbw import *
 # @lc code=start
-
+from fractions import Fraction
 class Solution:
     def isRationalEqual(self, s: str, t: str) -> bool:
         def parse(s:str):
-            L=len(s)
-            idx=0
-            int_part=0
-            while idx<L and s[idx]!='.':
-                int_part=int_part*10+int(s[idx])
-                idx+=1
-            idx+=1
-            frac_part=0
-            scale=1
-            while idx<L and s[idx]!='(':
-                frac_part=frac_part*10+int(s[idx])
-                idx+=1
-                scale*=10
-            idx+=1
-            repeat_part=[]
-            while idx<L and s[idx]!=')':
-                repeat_part.append(int(s[idx]))
-                idx+=1
-            
-            l=len(repeat_part)
-            for i in range(1,l//2+1):
-                if l%i==0 and repeat_part[:i]*(l//i)==repeat_part:
-                    repeat_part=repeat_part[:i]
-                    break
-            r=0
-            l=len(repeat_part)
-            for n in repeat_part:
-                r=r*10+n
-            if r==9:
-                r=0
-                frac_part+=1
-                if frac_part==scale:
-                    frac_part=0
-                    int_part+=1
-            else:
-                high=10**(l-1)
-                while frac_part and frac_part % 10==r%10:
-                    frac_part//=10
-                    r=(r%10)*high+r//10
-                    scale//=10
-            while frac_part and scale and frac_part%10==0 and scale%10==0:
-                frac_part//=10
-                scale//=10
-
-            if r==0:
-                l==0
-            return int_part,[frac_part,scale],[r,l]
-        
-        sp=parse(s)
-        st=parse(t)
-        if sp[0]!=st[0]:
-            return False
-    
-        if sp[1]!=st[1] and (sp[2][0]!=0 and st[2][0]!=0):
-            return False
-        if sp[2][0]!=st[2][0] or sp[2][0]*st[2][1]!=sp[2][1]*st[2][0]:
-            return False
-        return True
+            dot_idx=s.find('.')
+            if dot_idx<0:
+                return Fraction(int(s),1)
+            ans=Fraction(int(s[:dot_idx]),1)
+            s=s[dot_idx+1:]
+            if not s:
+                return ans
+            bracked_idx=s.find('(')
+            if bracked_idx<0:
+                return ans+Fraction(int(s),10**(len(s)))
+            scale=10**bracked_idx
+            if bracked_idx>0:
+                ans+=Fraction(int(s[:bracked_idx]),scale)
+            s=s[bracked_idx+1:-1]
+            ans+=Fraction(int(s),scale*(10**(len(s))-1))
+            return ans
+        return parse(s)==parse(t)
 # @lc code=end
 s = "0.9(9)"
 t = "1."

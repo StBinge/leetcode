@@ -11,13 +11,13 @@ class Solution:
         heap=[]
         for s in stones:
             heapq.heappush(heap,-s)
-        while len(heap)>1:
-            cur=-heapq.heappop(heap)
-            while heap and cur>=-stones[0]:
-                cur+=heapq.heappop(heap)
-            if cur>0:
-                heapq.heappush(heap,-cur)
-        return heap[0]
+        cur=heapq.heappop(heap)
+        while len(heap):
+            nxt=heapq.heappop(heap)
+            cur=cur-nxt
+            if heap and cur>heap[0]:
+                cur=heapq.heappushpop(heap,cur)
+        return -cur
 # @lc code=end
-
+assert Solution().lastStoneWeight([7,6,7,6,9])==3
 assert Solution().lastStoneWeight([2,7,4,1,8,1])==1

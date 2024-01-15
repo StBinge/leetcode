@@ -7,35 +7,24 @@ from sbw import *
 # @lc code=start
 class Solution:
     def longestStrChain(self, words: List[str]) -> int:
-        length_cnt={}
-        for i,w in enumerate(words):
-            length_cnt.setdefault(len(w),[]).append(i)
-        
-        @cache
-        def match(prev,next):
-            w1,w2=words(prev),words[next]
-            idx=0
-            mis=0
-            for c in w1:
-                if c==w2[idx]:
-                    idx+=1
-                else:
-                    mis+=1
-                    if mis>1:
-                        return False
-            return True
-        @cache
-        def dfs(wid):
-            l=len(words[wid])
-            ret=0
-            for nxt in length_cnt.get(l+1,[]):
-                if match(wid,nxt):
-                    ret=max(ret,dfs(nxt)+1)
-            return ret
+        cnt={}
+        words.sort(key=len)
+        # s=set(words)
         ret=0
-        for i in range(len(words)):
-            ret=max(ret,dfs(i))
+        for word in words:
+            cnt[word]=1
+            for i in range(len(word)):
+                prev=word[:i]+word[i+1:]
+                if prev in cnt:
+                    cnt[word]=max(cnt[word],cnt[prev]+1)
+            ret=max(ret,cnt[word])
         return ret
 # @lc code=end
+words=["abcd","dbqca"]
+assert Solution().longestStrChain(words)==1
+
+words = ["xbc","pcxbcf","xb","cxbc","pcxbc"]
+assert Solution().longestStrChain(words)==5
+
 words = ["a","b","ba","bca","bda","bdca"]
 assert Solution().longestStrChain(words)==4

@@ -7,14 +7,14 @@ def LSD(strs:list[str]):
     if N==0:
         return strs
     L=len(strs[0])
-    R=256
+    R=128
     for cid in range(L-1,-1,-1):
-        count=[0]*R
+        count=[0]*(R+1)
         for i in range(N):
             count[ord(strs[i][cid])+1]+=1
         for i in range(1,R):
             count[i]+=count[i-1]
-        aux=['']*N
+        aux=['']*N 
         for i in range(N):
             _ord=ord(strs[i][cid])
             aux[count[_ord]]=strs[i]

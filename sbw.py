@@ -2,6 +2,8 @@ from typing import List,Optional
 from collections import deque,Counter,defaultdict
 from functools import cache
 from itertools import accumulate
+from random import randint
+from bisect import bisect,bisect_left,bisect_right
 
 
 class ListNode:
@@ -18,14 +20,16 @@ class ListNode:
             cur = cur.next
         return dummy.next
 
-    def print(self):
+    def to_list(self):
         cur = self
         nums = []
         while cur:
             nums.append(cur.val)
             cur = cur.next
+        return nums
+    def print(self):      
 
-        print("->".join(map(str, nums)))
+        print("->".join(map(str, self.to_list())))
 
 
 class TreeNode:

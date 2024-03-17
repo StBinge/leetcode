@@ -8,18 +8,22 @@ from sbw import *
 
 class Solution:
     def makeArrayIncreasing(self, arr1: List[int], arr2: List[int]) -> int:
+        inf=float('inf')
+        arr1=[-1]+arr1+[inf]
         L1=len(arr1)
         arr2=sorted(set(arr2))
         L2=len(arr2)
-        inf=float('-inf')
-        f=[[inf]*(L2+1) for _ in range(L1+1)]
-        f[0][0]=-1
-        idx2=0
-        for i in range(1,L1+1):
-            for j in range(1,min(i,L2)+1):
-                if arr1[i]>f[i-1][j]:
-                    f[i][j]=arr1[i]
-                
+        f=[inf]*(L1)
+        f[0]=0
+        for i in range(1,L1):
+            if arr1[i]>arr1[i-1]:
+                f[i]=min(f[i],f[i-1])
+            
+            k=bisect_left(arr2,arr1[i])
+            for j in range(1,min(k,i-1)+1):
+                if arr2[k-j]>arr1[i-j-1]:
+                    f[i]=min(f[i],f[i-j-1]+j)
+        return f[-1] if f[-1]<inf else -1
 
 # @lc code=end
 assert Solution().makeArrayIncreasing(arr1 = [1,5,3,6,7], arr2 = [4,3,1])==2

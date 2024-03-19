@@ -8,6 +8,8 @@ from sbw import *
 import bisect
 class Solution:
     def makeArrayIncreasing(self, arr1: List[int], arr2: List[int]) -> int:
+        inf=float('inf')
+        arr1=[-1]+arr1+[inf]
         L1=len(arr1)
         arr2=sorted(set(arr2))
         L2=len(arr2)

@@ -6,6 +6,7 @@ from random import randint
 from bisect import bisect,bisect_left,bisect_right
 
 
+
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val

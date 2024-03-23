@@ -6,6 +6,7 @@ from random import randint
 from bisect import bisect,bisect_left,bisect_right
 from itertools import pairwise
 
+
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -154,6 +155,14 @@ def exec_expression(expr: str):
     ret.pop('old_vars')
     ret.pop('ret')
     return ret
+
+def assert_test(obj:object,operations:list,args:list,answers:list,skip_offset=1):
+
+    for op,arg,answer in zip(operations[skip_offset:],args[skip_offset:],answers[skip_offset:]):
+        ret =obj.__getattribute__(op)(*arg)
+        if ret==answer:
+            continue
+        raise
 
 if __name__ == "__main__":
     r = exec_expression("grid = [[1,1],[1,2]], row = 0, col = 0, color = 3")

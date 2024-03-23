@@ -4,7 +4,7 @@ from functools import cache
 from itertools import accumulate
 from random import randint
 from bisect import bisect,bisect_left,bisect_right
-
+from itertools import pairwise
 
 class ListNode:
     def __init__(self, val=0, next=None):

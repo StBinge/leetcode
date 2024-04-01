@@ -4,6 +4,7 @@ from functools import cache
 from itertools import accumulate
 from random import randint
 from bisect import bisect,bisect_left,bisect_right
+import heapq
 
 
 

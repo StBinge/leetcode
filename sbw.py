@@ -166,6 +166,9 @@ def assert_test(obj:object,operations:list,args:list,answers:list,skip_offset=1)
             continue
         raise
 
+# def assert_input_output(func,expressions:str):
+#     pass
+
 if __name__ == "__main__":
     r = exec_expression("grid = [[1,1],[1,2]], row = 0, col = 0, color = 3")
     pass

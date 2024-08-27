@@ -24,6 +24,7 @@ class Solution:
                     return n//fac
             fac-=1
         return -1
+    
 # @lc code=end
 assert Solution().kthFactor(4,4)==-1
 assert Solution().kthFactor(7,2)==7

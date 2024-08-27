@@ -15,41 +15,25 @@ from sbw import *
 #         self.right = right
 class Solution:
     def countPairs(self, root: TreeNode, distance: int) -> int:
-        ret = 0
 
-        def traverse(node: TreeNode):
+        def traverse(node: TreeNode):            
+            dist=[0]*distance
             if not node:
-                return {}
+                return (dist,-1)
             if not node.left and not node.right:
-                return {0: 1}
-            l_dis = traverse(node.left)
-            r_dis = traverse(node.right)
-            if l_dis and r_dis:
-                nonlocal ret
-                sorted_l_dis = sorted(l_dis.keys())
-                sorted_r_dis = sorted(r_dis.keys())
-                r_sum = sum(r_dis.values())
-                ri = len(sorted_r_dis) - 1
-                for ld in sorted_l_dis:
-                    while ri >= 0:
-                        rd = sorted_r_dis[ri]
-                        if rd + ld + 2 > distance:
-                            r_sum -= r_dis[rd]
-                            ri -= 1
-                        else:
-                            break
-                    if r_sum:
-                        ret += l_dis[ld] * r_sum
-                    else:
-                        break
-            tot = defaultdict(int)
-            for k in l_dis:
-                tot[k + 1] += l_dis[k]
-            for k in r_dis:
-                tot[k + 1] += r_dis[k]
-            return tot
-
-        traverse(root)
+                dist[0]=1
+                return (dist,0)
+            left_dist,left_ret=traverse(node.left)
+            right_dist,right_ret=traverse(node.right)
+            ret=0
+            if  right_ret>=0 and left_ret>=0:
+                for i in range(distance-1):
+                    for j in range(distance-2-i,-1,-1):
+                        ret+=left_dist[i]*right_dist[j]
+            for i in range(1,distance):
+                dist[i]+=left_dist[i-1]+right_dist[i-1]
+            return (dist,ret)
+        ret= traverse(root)[1]
         return ret
 
 

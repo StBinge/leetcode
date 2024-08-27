@@ -9,10 +9,9 @@ class Solution:
     def restoreString(self, s: str, indices: List[int]) -> str:
         ret=list(s)
         for i in range(len(indices)):
-            while i != indices[i]:
-                ret[i],ret[indices[i]]=ret[indices[i]],ret[i]
-                indices[indices[i]],indices[i]=indices[i],indices[indices[i]]
-                # indices[i],indices[indices[i]]=indices[indices[i]],indices[i]
+           while i!=indices[i]:
+               ret[i],ret[indices[i]]=ret[indices[i]],ret[i]
+               indices[indices[i]],indices[i]=indices[i],indices[indices[i]]
         return ''.join(ret)
 
 # @lc code=end

@@ -1,11 +1,11 @@
-from typing import List,Optional
+from typing import List,Optional,Tuple
 from collections import deque,Counter,defaultdict
-from functools import cache
-from itertools import accumulate
+from functools import cache,reduce
+from itertools import accumulate,zip_longest
 from random import randint
 from bisect import bisect,bisect_left,bisect_right
-from itertools import pairwise
-import heapq
+from itertools import pairwise,groupby
+import heapq,bisect,math
 
 
 
@@ -88,10 +88,63 @@ class TreeNode:
             ret.pop()
         return "[" + ",".join(map(str, ret)).replace("None", "null") + "]"
 
-    def print(self):
-        print(self.to_str())
+    @property
+    def depth(self):
+        q=[self,1]
+        ret=1
+        while q:
+            node,d=q.pop()
+            ret=max(ret,d)
+            if node.left:
+                q.append([node.left,d+1])
+            if node.right:
+                q.append([node.right,d+1])
+        return ret
+    
+    @property
+    def extreme_vals(self):
+        q=[self]
+        ma=float('-inf')
+        mi=float('inf')
+        while q:
+            node=q.pop()
+            ma=max(ma,node.val)
+            mi=min(mi,node.val)
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+        return [mi,ma]
 
-
+    def print(self,row_gap,col_gap):
+        d=self.depth
+        mi,ma=self.extreme_vals
+        val_str_len=max(len(mi),len(ma))
+    
+    def is_same(self,other:'TreeNode'):
+        q1=[self]
+        q2=[other]
+        while q1 and q2:
+            n1=q1.pop()
+            n2=q2.pop()
+            if n1.val!=n2.val:
+                return False
+            has_left1=n1.left is not None
+            has_left2=n2.right is not None
+            if has_left1!=has_left2:
+                return False
+            if has_left1:
+                q1.append(n1.left)
+                q2.append(n2.left)
+            
+            has_right1=n1.right is not None
+            has_right2=n2.right is not None
+            if has_right1!=has_right2:
+                return False
+            if has_right1:
+                q1.append(n1.right)
+                q2.append(n2.right)
+        return len(q1)==len(q2)
 class SortedSet:
     def __init__(self) -> None:
         self.array = []
@@ -166,8 +219,45 @@ def assert_test(obj:object,operations:list,args:list,answers:list,skip_offset=1)
             continue
         raise
 
+
+def is_equal(obj1,obj2):
+    if obj1 is None and obj2 is None:
+        return True
+    elif isinstance(obj1,list):
+        for item1,item2 in zip_longest(obj1,obj2):
+            if not is_equal(item1,item2):
+                return False
+        return True
+    elif isinstance(obj1,float):
+        return abs(obj1-obj2)<=1e-5
+    elif isinstance(obj1,ListNode):
+        return obj1.to_list()==obj2.to_list()
+    elif isinstance(obj1,TreeNode):
+        return obj1.to_str()==obj2.to_str()
+    else:
+        return obj1==obj2
+
+def assert_answer(answer,ret):
+    error_msg=f'\nAnswer:{answer}\nRet:{ret}'
+    assert is_equal(answer,ret),error_msg
+
+
 # def assert_input_output(func,expressions:str):
 #     pass
+
+def test_obj(obj:object,operations,args,answers,offset=1):
+    if isinstance(answers,str):
+        answers=eval_list_str(answers)
+    for i in range(offset,len(operations)):
+        method=obj.__getattribute__(operations[i])
+        ret=method(*args[i])
+        if not is_equal(ret,answers[i]):
+            print('Idx:',i)
+            print('Op :',operations[i])
+            print('Arg:',args[i])
+            print('Ret:',ret)
+            print('Ans:',answers[i])
+            break
 
 if __name__ == "__main__":
     r = exec_expression("grid = [[1,1],[1,2]], row = 0, col = 0, color = 3")

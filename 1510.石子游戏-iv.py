@@ -11,12 +11,12 @@ class Solution:
         f=[False]*(n+1)
         for i in range(1,n+1):
             j=1
-            while (cubic:=j*j)<=i:
-                if f[i-cubic]==False:
+            while j*j<=i:
+                if f[i-j*j]==False:
                     f[i]=True
                     break
                 j+=1
-        return f[-1]
+        return f[n]
 
 # @lc code=end
 assert Solution().winnerSquareGame(8)

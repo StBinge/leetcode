@@ -5,41 +5,47 @@
 #
 from sympy import numer
 from sbw import *
+
+
 # @lc code=start
 class Solution:
     def diStringMatch(self, s: str) -> List[int]:
-        N=len(s)
-        lo,hi=0,N
-        ret=[]
+        N = len(s)
+        lo, hi = 0, N
+        ret = []
         for c in s:
-            if c=='I':
+            if c == "I":
                 ret.append(lo)
-                lo+=1
+                lo += 1
             else:
                 ret.append(hi)
-                hi-=1
+                hi -= 1
         ret.append(lo)
         return ret
+
+
 # @lc code=end
-def check(s,ret):
-    for i,c in enumerate(s):
-        if c=='I' and ret[i]>ret[i+1]:
+def is_equal(s, ret):
+    for i, c in enumerate(s):
+        if c == "I" and ret[i] > ret[i + 1]:
             return False
-        if c=='D' and ret[i]<ret[i+1]:
+        if c == "D" and ret[i] < ret[i + 1]:
             return False
     return True
+
+
 s = "D"
-ret=Solution().diStringMatch(s)
-assert check(s,ret)
+ret = Solution().diStringMatch(s)
+assert is_equal(s, ret)
 
 s = "IDID"
-ret=Solution().diStringMatch(s)
-assert check(s,ret)
+ret = Solution().diStringMatch(s)
+assert is_equal(s, ret)
 
 s = "III"
-ret=Solution().diStringMatch(s)
-assert check(s,ret)
+ret = Solution().diStringMatch(s)
+assert is_equal(s, ret)
 
 s = "DDI"
-ret=Solution().diStringMatch(s)
-assert check(s,ret)
+ret = Solution().diStringMatch(s)
+assert is_equal(s, ret)

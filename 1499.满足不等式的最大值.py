@@ -8,19 +8,21 @@ from sbw import *
 
 class Solution:
     def findMaxValueOfEquation(self, points: List[List[int]], k: int) -> int:
-        L=len(points)
-        ret=float('-inf')
         q=deque()
+        # x,y=points[0]
+        # q.append([y-x,x])
+        ret=float('-inf')
         for x,y in points:
             while q and q[0][1]+k<x:
                 q.popleft()
             if q:
-                ret=max(ret,x+y+q[0][0])
+                ret=max(ret,q[0][0]+x+y)
             z=y-x
-            while q and q[-1][0]<z:
+            while q and z>=q[-1][0]:
                 q.pop()
             q.append([z,x])
         return ret
+
 # @lc code=end+y
 assert Solution().findMaxValueOfEquation([[-19,9],[-15,-19],[-5,-8]],10)==-6
 assert Solution().findMaxValueOfEquation(points = [[0,0],[3,0],[9,2]], k = 3)==3

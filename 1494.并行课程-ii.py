@@ -9,30 +9,31 @@ import itertools
 class Solution:
     def minNumberOfSemesters(self, n: int, relations: List[List[int]], k: int) -> int:
         if len(relations)==0:
-            return (n-1)//k+1
-        masks=[0]*n
-        for first,second in relations:
-            first-=1
-            second-=1
-            masks[second] |= 1<<first
+            return (n-1)//k +1
         
-        f=[30]*(1<<n)
-        f[-1]=0
-        for mask in range((1<<n)-2,-1,-1):
-            can_mask=0
-            for i in range(n):
-                if mask & 1<<i ==0 and mask & masks[i]==masks[i]:
-                    can_mask |= 1<<i
-            if can_mask.bit_count()<=k:
-                f[mask]=f[mask | can_mask]+1
+        need=[0]*(1<<n)
+        for x,y in relations:
+            x-=1
+            y-=1
+            need[1<<y] |= 1<<x
+        
+        f=[float('inf')]*(1<<n)
+        f[0]=0
+        for i in range(1,1<<n):
+            need[i]=need[i&(i-1)] | need[i&(-i)]
+            if i & need[i] !=i:
                 continue
-            j=can_mask
-            while j:
-                j=(j-1) & can_mask
-                if j.bit_count()==k:
-                    f[mask]=min(f[mask],f[mask | j]+1)
-        return f[0]
-
+            sub=i ^ need[i]
+            if sub.bit_count()<=k:
+                f[i]=min(f[i],f[i ^ sub]+1)
+                continue
+            valid=sub
+            while sub:
+                sub=(sub-1) & valid
+                if sub.bit_count()<=k:
+                    f[i]=min(f[i],f[i ^ sub]+1)
+                
+        return f[-1]
             
 
 # @lc code=end

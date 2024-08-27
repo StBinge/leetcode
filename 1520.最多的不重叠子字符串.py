@@ -8,33 +8,38 @@ from sbw import *
 class Solution:
     def maxNumOfSubstrings(self, s: str) -> List[str]:
         L=len(s)
-        # char : [left,right]
-        segs={}
-        for i in range(L):
-            segs.setdefault(s[i],[0,0])
-            segs.setdefault(s[L-i-1],[0,0])
-            segs[s[i]][1]=i
-            segs[s[L-i-1]][0]=L-i-1
-        for ch,[left,right] in segs.items():
-            i=left+1
-            while i<=right:
-                l,r=segs[s[i]]
-                if left<=l and right>=r:
-                    i+=1
-                    continue
-                left=min(left,l)
-                right=max(right,r)
-                i=left+1
-            segs[ch]=[left,right]
-        segs=sorted(segs.values(),key= lambda x:(x[1],-x[0]))
+
+        first_pos=[-1]*26
+        last_pos=[L]*26
+        for i,c in enumerate(s):
+            idx=ord(c)-ord('a')
+            if first_pos[idx]==-1:
+                first_pos[idx]=i
+            last_pos[idx]=i
+        sorted_last_pos=sorted([[i,p] for i,p in enumerate(last_pos) if p<L],key=lambda x:x[1])
+        pre_end=-1
         ret=[]
-        end=-1
-        for left,right in segs:
-            if left>end:
-                ret.append(s[left:right+1])
-                end=right
+        for code, end in sorted_last_pos:
+            start=first_pos[code]
+            if start<=pre_end:
+                continue
+            i=end
+            while i>start:
+                idx=ord(s[i])-ord('a')
+                left=first_pos[idx]
+                start=min(left,start)
+                if start<=pre_end:
+                    break
+                right=last_pos[idx]
+                if right>end:
+                    break
+                i-=1
+            if i==start:
+                ret.append(s[start:end+1])
+                pre_end=end
         return ret
+
 # @lc code=end
+assert sorted(Solution().maxNumOfSubstrings('abbaccd'))==sorted(["d","bb","cc"])
 assert sorted(Solution().maxNumOfSubstrings('abab'))==sorted(['abab'])
-assert sorted(Solution().maxNumOfSubstrings('abbaccd'))==sorted(["d","bb","cc"]),Solution().maxNumOfSubstrings('abbaccd')
 assert sorted(Solution().maxNumOfSubstrings('adefaddaccc'))==sorted(["e","f","ccc"])

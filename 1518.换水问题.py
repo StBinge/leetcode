@@ -4,11 +4,14 @@
 # [1518] 换水问题
 #
 
+
 # @lc code=start
 class Solution:
     def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
-        cnt=numBottles//(numExchange-1)
-        return numBottles+cnt-int(numBottles%(numExchange-1)==0)
+        return numBottles + (numBottles-1)//(numExchange-1)
+
+
 # @lc code=end
-assert Solution().numWaterBottles(15,4)==19
-assert Solution().numWaterBottles(9,3)==13
+assert Solution().numWaterBottles(2, 3) == 2
+assert Solution().numWaterBottles(15, 4) == 19
+assert Solution().numWaterBottles(9, 3) == 13

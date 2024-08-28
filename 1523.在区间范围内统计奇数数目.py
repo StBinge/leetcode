@@ -8,9 +8,7 @@
 class Solution:
     def countOdds(self, low: int, high: int) -> int:
         between=(high-low+1)
-        if low%2:
-            between+=1
-        return between//2
+        return (between+low%2)//2
 
 
 # @lc code=end

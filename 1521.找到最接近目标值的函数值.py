@@ -11,7 +11,7 @@ class Solution:
             return 0
         ret=abs(-10**9-target)
         # L=len(arr)
-        valid={(1<<30)-1}
+        valid={arr[0]}
         for n in arr:
             valid={n& pre for pre in valid} | {n}
             ret=min(ret,min(abs(x-target) for x in valid))

@@ -1,15 +1,109 @@
-class BaseMeta(type):
-    def __new__(cls,name,bases,attrs):
-        print(f'Creating class[{name}] by BaseMeta')
-        return super().__new__(cls,name,bases,attrs)
+#
+# @lc app=leetcode.cn id=928 lang=python3
+#
+# [928] 尽量减少恶意软件的传播 II
+#
+from sbw import *
 
-class ChildMeta(BaseMeta):
-    def __new__(cls, name, bases, attrs):
-        print(f'Creating class[{name}] by ChildMeta')
-        return super().__new__(cls,name, bases, attrs)
 
-class BaseClass(metaclass=BaseMeta):
-    pass
+# @lc code=start
+class Union:
+    def __init__(self, n) -> None:
+        self.sz = [1] * n
+        self.p = list(range(n))
 
-class ChildClass(metaclass=ChildMeta):
-    pass
+    def find(self, x):
+        if x != self.p[x]:
+            self.p[x] = self.find(self.p[x])
+        return self.p[x]
+
+    def connect(self, x, y):
+        x, y = self.find(x), self.find(y)
+        self.p[x]=y
+        # if x == y:
+        #     return
+        # if self.sz[x] > self.sz[y]:
+        #     self.p[y] = x
+        #     self.sz[x] += self.sz[y]
+        # else:
+        #     self.p[x] = y
+        #     self.sz[y] += self.sz[x]
+
+
+class Solution:
+    def find(self, uf: List[int], u: int) -> int:
+        if uf[u] == u:
+            return u
+        uf[u] = self.find(uf, uf[u])
+        return uf[u]
+
+    def merge(self, uf: List[int], u: int, v: int):
+        ru, rv = self.find(uf, u), self.find(uf, v)
+        uf[ru] = rv
+
+    def minMalwareSpread(self, graph: List[List[int]], initial: List[int]) -> int:
+        n = len(graph)
+        initialSet = [0] * n
+        for v in initial:
+            initialSet[v] = 1
+        uf = [i for i in range(n)]
+        for u in range(n):
+            if initialSet[u] == 1:
+                continue
+            for v in range(n):
+                if initialSet[v] == 1:
+                    continue
+                if graph[u][v] == 1:
+                    self.merge(uf, u, v)
+        infectedBy = [[] for _ in range(n)]
+        for v in initial:
+            infectedSet = [0] * n
+            for u in range (n):
+                if initialSet[u] == 1 or graph[u][v] == 0:
+                    continue
+                infectedSet[self.find(uf, u)] = 1
+            for u in range(n):
+                if infectedSet[u] == 1:
+                    infectedBy[u].append(v)
+
+        count = [0] * n
+        for u in range(n):
+            if len(infectedBy[u]) != 1:
+                continue
+            v = infectedBy[u][0]
+            for w in range(n):
+                if self.find(uf, w) == self.find(uf, u):
+                    count[v] += 1
+        res = initial[0]
+        for v in initial:
+            if count[v] > count[res] or (count[v] == count[res] and v < res):
+                res = v
+        return res
+
+
+
+# @lc code=end
+assert (
+    Solution().minMalwareSpread([[1,1,0,0,0,0,0,0,0,0],[1,1,0,0,0,0,0,0,0,0],[0,0,1,0,0,0,0,0,0,0],[0,0,0,1,0,0,1,0,0,1],[0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,1,0,0,0,0],[0,0,0,1,0,0,1,0,0,0],[0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,0,1,0],[0,0,0,1,0,0,0,0,0,1]],[2,1,9])
+    == 9
+)
+assert (
+    Solution().minMalwareSpread([[1,1,0,0],[1,1,0,1],[0,0,1,0],[0,1,0,1]],[3,0])
+    == 0
+)
+assert (
+    Solution().minMalwareSpread([[1,0,0,0,0,1,0],[0,1,1,0,0,0,0],[0,1,1,0,0,0,0],[0,0,0,1,0,0,0],[0,0,0,0,1,0,0],[1,0,0,0,0,1,0],[0,0,0,0,0,0,1]],[4])
+    == 4
+)
+assert (
+    Solution().minMalwareSpread(graph = [[1,1,0,0],[1,1,1,0],[0,1,1,1],[0,0,1,1]], initial = [0,1])
+    == 1
+)
+assert (
+    Solution().minMalwareSpread(graph=[[1, 1, 0], [1, 1, 1], [0, 1, 1]], initial=[0, 1])
+    == 1
+)
+assert (
+    Solution().minMalwareSpread(graph=[[1, 1, 0], [1, 1, 0], [0, 0, 1]], initial=[0, 1])
+    == 0
+)

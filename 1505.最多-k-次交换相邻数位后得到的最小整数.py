@@ -33,23 +33,23 @@ class Solution:
         L=len(num)
         pos=[[] for _ in range(10)]
         for i in range(L-1,-1,-1):
-            pos[ord(num[i])-ord('0')].append(i+1)
+            pos[int(num[i])].append(i+1)
         
-        node=SegTree(L)
         ret=[]
+        seg=SegTree(L)
         for i in range(1,L+1):
             for j in range(10):
                 if not pos[j]:
                     continue
                 p=pos[j][-1]
-                behind=node.get_range(p+1,L)
-                move=p+behind-i
+                offset=seg.get_range(p+1,L)
+                move=p+offset-i
                 if move>k:
                     continue
                 k-=move
-                pos[j].pop()
+                seg.add(p)
                 ret.append(str(j))
-                node.add(p)
+                pos[j].pop()
                 break
         return ''.join(ret)
 # @lc code=end

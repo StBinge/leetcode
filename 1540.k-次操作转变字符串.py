@@ -11,17 +11,16 @@ class Solution:
     def canConvertString(self, s: str, t: str, k: int) -> bool:
         if len(s) != len(t):
             return False
-        cnt=[k//26]*26
-        for i in range(k%26):
-            cnt[i+1]+=1
+        cnt=[0]*26
         for c1, c2 in zip(s, t):
             if c1 == c2:
                 continue
             code1 = ord(c1)
             code2 = ord(c2)
             op = (code2 - code1) % 26
-            cnt[op]-=1
-            if cnt[op]<0:
+            cnt[op]+=1
+        for i,c in enumerate(cnt):
+            if i+26*(c-1)>k:
                 return False
 
 

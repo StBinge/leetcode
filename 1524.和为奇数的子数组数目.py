@@ -8,20 +8,17 @@ from sbw import *
 from math import comb
 class Solution:
     def numOfSubarrays(self, arr: List[int]) -> int:
-        odds=0
-        evens=1
-        total=0
         ret=0
         Mod=10**9+7
+        f0,f1=0,0
         for n in arr:
-            total+=n
-            ret+=odds if total%2==0 else evens
-            if total%2:
-                odds+=1
+            if n%2:
+                f0,f1=f1,1+f0
             else:
-                evens+=1
+                f0=1+f0
+            ret=(ret+f1)%Mod
+        return ret
 
-        return ret % Mod
 
 # @lc code=end
 assert Solution().numOfSubarrays([1,2,3,4,5,6,7])==16

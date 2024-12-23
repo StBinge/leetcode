@@ -4,7 +4,6 @@
 #
 # [1986] 完成任务的最少工作时间段
 #
-
 from sbw import *
 
 # @lcpr-template-start
@@ -13,20 +12,27 @@ from sbw import *
 # @lc code=start
 class Solution:
     def minSessions(self, tasks: List[int], sessionTime: int) -> int:
-        tasks.sort(reverse=True)
-        def check(cnt,buckets:list,idx):
-            buckets=[0]*cnt
-            idx=0
-            for t in tasks:
+        def add(stamp,h):
+            sessions,hours=stamp
+            if hours+h>sessionTime:
+                return [sessions+1,h]
+            return [sessions,hours+h]
 
-
+        N=len(tasks)
+        f=[[float('inf')]*2]*(1<<N)
+        f[0]=[0,0]
+        for mask in range(1,1<<N):
+            for i in range(N):
+                if (1<<i) & mask:
+                    f[mask]=min(f[mask],add(f[mask ^ (1<<i)],tasks[i]))
+        s,h=f[-1]
+        s+=h>0
+        return s
+        
                     
+
 # @lc code=end
-assert Solution().minSessions([2,10,1,10,4,4,7,10,7,4,10,2],15)==5
-assert Solution().minSessions([3,9],10)==2
-assert Solution().minSessions([2,2,2,3,3,4,5,5,7,8,8,10,10],14)==5
-assert Solution().minSessions([2,3,3,4,4,4,5,6,7,10],12)==4
-assert Solution().minSessions(tasks = [3,1,3,1,1], sessionTime = 8)==2
+assert Solution().minSessions([7,4,3,8,10],12)==3
 assert Solution().minSessions(tasks = [1,2,3], sessionTime = 3)==2
 
 

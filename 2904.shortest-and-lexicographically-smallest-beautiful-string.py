@@ -5,7 +5,6 @@
 # [2904] 最短且字典序最小的美丽子字符串
 #
 
-
 # @lcpr-template-start
 
 # @lcpr-template-end

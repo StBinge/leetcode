@@ -8,6 +8,7 @@ from sbw import *
 
 # @lcpr-template-start
 
+
 # @lcpr-template-end
 # @lc code=start
 class Solution:
@@ -15,16 +16,16 @@ class Solution:
         # presums=[0]
         # for p in possible:
         #     presums.append(presums[-1]+p*2-1)
-        s=sum(p*2-1 for p in possible)
-        cur=0
-        for i in range(len(possible)-1):
-            cur+=possible[i]*2-1
-            if cur*2>s:
-                return i+1
+        s = sum(p * 2 - 1 for p in possible)
+        cur = 0
+        for i in range(len(possible) - 1):
+            cur += possible[i] * 2 - 1
+            if cur * 2 > s:
+                return i + 1
         return -1
 
-# @lc code=end
 
+# @lc code=end
 
 
 #
@@ -41,4 +42,3 @@ class Solution:
 # @lcpr case=end
 
 #
-

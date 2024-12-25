@@ -16,7 +16,6 @@ class Solution:
 # @lc code=end
 
 
-
 #
 # @lcpr case=start
 # [1,1,0]\n

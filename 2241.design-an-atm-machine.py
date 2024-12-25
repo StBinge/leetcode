@@ -42,7 +42,6 @@ class ATM:
 # @lc code=end
 
 
-
 #
 # @lcpr case=start
 # ["ATM", "deposit", "withdraw", "deposit", "withdraw", "withdraw"][[], [[0,0,1,2,1]], [600], [[0,1,0,1,1]], [600], [550]]\n

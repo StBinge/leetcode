@@ -6,18 +6,21 @@
 #
 
 from sbw import *
+
 # @lcpr-template-start
+
 
 # @lcpr-template-end
 # @lc code=start
 class Solution:
     def minOperations(self, k: int) -> int:
-        x=math.isqrt(k)
-        cnt1=x-1 + (k-1)//x
-        cnt2=x + (k-1)//(x+1)
-        return min(cnt1,cnt2)
-# @lc code=end
+        x = math.isqrt(k)
+        cnt1 = x - 1 + (k - 1) // x
+        cnt2 = x + (k - 1) // (x + 1)
+        return min(cnt1, cnt2)
 
+
+# @lc code=end
 
 
 #
@@ -30,4 +33,3 @@ class Solution:
 # @lcpr case=end
 
 #
-

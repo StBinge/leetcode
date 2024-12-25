@@ -245,7 +245,8 @@ def assert_answer(answer,ret):
 # def assert_input_output(func,expressions:str):
 #     pass
 
-def test_obj(obj:object,operations,args,answers,offset=1):
+def test_obj(cls,operations,args,answers,offset=1):
+    obj=cls(*args[0])
     if isinstance(answers,str):
         answers=eval_list_str(answers)
     for i in range(offset,len(operations)):
@@ -257,7 +258,9 @@ def test_obj(obj:object,operations,args,answers,offset=1):
             print('Arg:',args[i])
             print('Ret:',ret)
             print('Ans:',answers[i])
-            break
+            print('Test Failed')
+    else:
+        print('Test Pass')
 
 if __name__ == "__main__":
     r = exec_expression("grid = [[1,1],[1,2]], row = 0, col = 0, color = 3")

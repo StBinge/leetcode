@@ -12,19 +12,31 @@ from sbw import *
 # @lc code=start
 class Solution:
     def subarrayGCD(self, nums: List[int], k: int) -> int:
+        a=[]
+        i0=-1
         ret=0
-        left=0
-        g=nums[0]
-        for right,n in enumerate(nums):
-            if n%k!=0:
-                left=right+1
-                g=nums[right+1]
-            g=math.gcd(g,nums[right])
-            if g==k:
+        for i,x in enumerate(nums):
+            if x%k:
+                a=[]
+                i0=i
+                continue
+            a.append([x,i])
+            j=0
+            for p in a:
+                p[0]=math.gcd(p[0],x)
+                if p[0]==a[j][0]:
+                    a[j][1]=p[1]
+                else:
+                    a[j]=p
+            if a[0][0]==k:
+                ret+=a[0][1]-i0
+        return ret
                 
 # @lc code=end
-
-
+assert Solution().subarrayGCD([9,3,3,1,2,6,3],3)==7
+assert Solution().subarrayGCD([9,3,1,2,6,3],3)==4
+assert Solution().subarrayGCD([5],1)==0
+assert Solution().subarrayGCD([4],7)==0
 
 #
 # @lcpr case=start

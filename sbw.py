@@ -1,4 +1,4 @@
-from typing import List,Optional,Tuple
+from typing import List,Optional,Tuple,Callable
 from collections import deque,Counter,defaultdict
 from functools import cache,reduce
 from itertools import accumulate,zip_longest
@@ -6,6 +6,7 @@ from random import randint
 from bisect import bisect,bisect_left,bisect_right
 from itertools import pairwise,groupby
 import heapq,bisect,math
+import inspect
 
 
 
@@ -245,20 +246,47 @@ def assert_answer(answer,ret):
 # def assert_input_output(func,expressions:str):
 #     pass
 
+# def test_allcase(cls,cases:str):
+#     obj=cls()
+#     for prop_name,prop in obj.__dict__:
+#         if prop_name.startswith('_') or callable(prop)==False:
+#             continue
+#         args_cnt=len(inspect.signature(prop).parameters)
+#         cases_args=cases.split('')
+#         case=[]
+#         for arg in cases_args:
+#             if not arg:
+#                 continue
+#             case.append(arg)
+#             if len(case)==args_cnt:
+
+
 def test_obj(cls,operations,args,answers,offset=1):
     obj=cls(*args[0])
     if isinstance(answers,str):
         answers=eval_list_str(answers)
     for i in range(offset,len(operations)):
-        method=obj.__getattribute__(operations[i])
-        ret=method(*args[i])
-        if not is_equal(ret,answers[i]):
-            print('Idx:',i)
-            print('Op :',operations[i])
-            print('Arg:',args[i])
-            print('Ret:',ret)
-            print('Ans:',answers[i])
-            print('Test Failed')
+        ret=None
+        try:
+            method=obj.__getattribute__(operations[i])
+            ret=method(*args[i])
+            if not is_equal(ret,answers[i]):
+                print('Idx:',i)
+                print('Op :',operations[i])
+                print('Arg:',args[i])
+                print('Ret:',ret)
+                print('Ans:',answers[i])
+                print('Test Failed')
+                break
+        except Exception as e:
+                print('Idx:',i)
+                print('Op :',operations[i])
+                print('Arg:',args[i])
+                print('Ret:',ret)
+                print('Ans:',answers[i])
+                print('Test Error:',e)
+                print(e)
+                break
     else:
         print('Test Pass')
 

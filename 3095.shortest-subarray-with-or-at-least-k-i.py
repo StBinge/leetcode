@@ -12,15 +12,19 @@ from sbw import *
 # @lc code=start
 class Solution:
     def minimumSubarrayLength(self, nums: List[int], k: int) -> int:
-        ans = float('inf')
-        cur = dict()
-        for i, x in enumerate(nums):
-            cur = {_or | x: left for _or, left in cur.items()}
-            cur[x] = i
-            for _or, left in cur.items():
-                if _or >= k:
-                    ans = min(ans, i - left + 1)
-        return ans if ans != float('inf') else -1
+        ret = float('inf')
+        left=bottom=right_or=0
+        for right,x in enumerate(nums):
+            right_or|=x
+            while left<=right and nums[left]|right_or>=k:
+                ret=min(ret,right-left+1)
+                left+=1
+                if left>bottom:
+                    for i in range(right-1,left-1,-1):
+                        nums[i]|=nums[i+1]
+                    right_or=0
+                    bottom=right
+        return ret if ret<float('inf') else -1
 
                 
 

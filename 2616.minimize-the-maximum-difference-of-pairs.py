@@ -16,25 +16,26 @@ class Solution:
     def minimizeMax(self, nums: List[int], p: int) -> int:
         if p == 0:
             return 0
+
         N = len(nums)
         nums.sort()
-        if 
-   
 
-        difs = [[abs(nums[i] - nums[i + 1]), i, i + 1] for i in range(N - 1)]
-        used = [False] * N
-        difs.sort()
-        for [dif, i, j] in difs:
-            if used[i] or used[j]:
-                continue
-            p -= 1
-            if p == 0:
-                return dif
-            used[i] = used[j] = True
+        def check(x):
+            idx = 0
+            cnt = 0
+            while idx + 1 < N:
+                if nums[idx + 1] - nums[idx] <= x:
+                    cnt += 1
+                    idx += 2
+                else:
+                    idx += 1
+            return cnt >= p
+        mx = nums[-1] - nums[0]
+        return bisect_left(range(mx),True,key=check)
 
 
 # @lc code=end
-assert Solution().minimizeMax([3,4,2,3,2,1,2],3) == 0
+assert Solution().minimizeMax([3, 4, 2, 3, 2, 1, 2], 3) == 1
 assert Solution().minimizeMax(nums=[4, 2, 1, 2], p=1) == 0
 assert Solution().minimizeMax(nums=[10, 1, 2, 7, 1, 3], p=2) == 1
 

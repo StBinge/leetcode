@@ -16,21 +16,11 @@ class Solution:
     def maxNumOfMarkedIndices(self, nums: List[int]) -> int:
         N = len(nums)
         nums.sort()
-        ret = 0
-        marked = [False] * N
-        j = N - 1
-        for i in range(N - 1, -1, -1):
-            if marked[i]:
-                continue
-            while j >= 0 and nums[i] < nums[j] * 2:
-                j -= 1
-            if j == -1:
-                return ret
-            marked[j] = True
-            ret += 2
-            j -= 1
-        return ret
-
+        left=0
+        for x in nums[(N+1)//2:]:
+            if nums[left]*2<=x:
+                left+=1
+        return left*2
 
 # @lc code=end
 assert Solution().maxNumOfMarkedIndices([42,83,48,10,24,55,9,100,10,17,17,99,51,32,16,98,99,31,28,68,71,14,64,29,15,40]) == 26

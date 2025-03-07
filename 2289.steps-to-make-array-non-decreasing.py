@@ -14,29 +14,30 @@ from sbw import *
 # @lc code=start
 class Solution:
     def totalSteps(self, nums: List[int]) -> int:
-        temp=[]
-        idx=0
+        N=len(nums)
+        st=[]
         ret=0
-        while len(temp) != len(nums):
-            ret+=1
-            nums=temp
-            temp=[]
-            N=len(nums)
-            idx=0
-            while idx<N:   
-                j=idx+1
-                while j<len(nums) and nums[j]<nums[idx]:
-                    j+=1                
-                temp.append(nums[idx])
-                idx=j
+        for n in nums:
+            step=0
+            while st and st[-1][0]<=n:
+                step=max(step,st.pop()[1])
+            if st:
+                step+=1
+            else:
+                step=0
+            st.append([n,step])
+            ret=max(ret,step)
         return ret
+            
+
+            
 
 
 
 # @lc code=end
-assert Solution().totalSteps([10,1,2,3,4,5,6,1,2,3]) == 6
-assert Solution().totalSteps([4, 5, 7, 7, 13]) == 0
 assert Solution().totalSteps([5, 3, 4, 4, 7, 3, 6, 11, 8, 5, 11]) == 3
+assert Solution().totalSteps([4, 5, 7, 7, 13]) == 0
+assert Solution().totalSteps([10,1,2,3,4,5,6,1,2,3]) == 6
 
 
 #

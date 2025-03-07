@@ -4,7 +4,7 @@ from functools import cache,reduce
 from itertools import accumulate,zip_longest
 from random import randint
 from bisect import bisect,bisect_left,bisect_right
-from itertools import pairwise,groupby
+from itertools import pairwise,groupby,count
 import heapq,bisect,math
 import inspect
 
